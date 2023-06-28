@@ -1,3 +1,8 @@
-console.log("진입점이 될 app.js");
+import Todos from "./components/Todos.js";
 
-class App {}
+export default class App {
+  constructor() {
+    const $app = document.querySelector("#app");
+    new Todos($app);
+  }
+}
