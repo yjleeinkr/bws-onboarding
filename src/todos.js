@@ -1,9 +1,5 @@
 import { getLocal, setLocal } from "./utils.js";
 import { paintLocalTodos, appendTodos, paintLocalStatus } from "./paint.js";
-import { handleDelete, handleStatus } from "./eventHandler.js";
-
-const $input = document.querySelector(".todo-input");
-const $todoList = document.querySelector(".todo-list");
 
 let todos = getLocal("todos") ?? [];
 
@@ -45,27 +41,23 @@ export function updateTodo(id) {
 }
 
 function initPaint() {
-  const localTodos = paintLocalTodos(todos);
-  $todoList.innerHTML = localTodos;
+  paintLocalTodos(todos);
   paintLocalStatus(todos);
 }
 
 function initEvent() {
-  const $delBtn = document.querySelectorAll(".del-btn");
-  $delBtn.forEach((btn) => btn.addEventListener("click", handleDelete));
-  const $checkBox = document.querySelectorAll(".checkbox");
-  $checkBox.forEach((check) => check.addEventListener("click", handleStatus));
-}
-
-function init() {
-  initPaint();
-  initEvent();
+  const $input = document.querySelector(".todo-input");
   $input.addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
       addTodo(e.currentTarget.value);
       $input.value = "";
     }
   });
+}
+
+function init() {
+  initPaint();
+  initEvent();
 }
 
 init();

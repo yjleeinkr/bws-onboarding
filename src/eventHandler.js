@@ -18,3 +18,10 @@ export function handleStatus(e) {
     checkbox.textContent = "";
   }
 }
+
+export function attachEvent() {
+  const $delBtn = document.querySelectorAll(".del-btn");
+  $delBtn.forEach((btn) => btn.addEventListener("click", handleDelete));
+  const $checkBox = document.querySelectorAll(".checkbox");
+  $checkBox.forEach((check) => check.addEventListener("click", handleStatus));
+}
