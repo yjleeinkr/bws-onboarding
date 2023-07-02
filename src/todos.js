@@ -47,11 +47,27 @@ function initPaint() {
 
 function initEvent() {
   const $input = document.querySelector(".todo-input");
+  const $clearAllBtn = document.querySelector(".clear-all-btn");
+
   $input.addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
       addTodo(e.currentTarget.value);
       $input.value = "";
     }
+  });
+
+  $clearAllBtn.addEventListener("click", () => {
+    let leftTodos = [];
+    let doneTodos = [];
+    todos.forEach((todo) =>
+      todo.isDone ? doneTodos.push(todo) : leftTodos.push(todo)
+    );
+    if (doneTodos.length === 0) {
+      alert("삭제할 todo가 없습니다");
+      return;
+    }
+    setTodos(leftTodos);
+    paintLocalTodos(todos);
   });
 }
 
