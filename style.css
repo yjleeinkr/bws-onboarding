@@ -247,3 +247,9 @@ body {
   padding: 50px 0px 5px;
   color: var(--medium-grey-color);
 }
+
+.guide {
+  font-size: 12px;
+  text-align: end;
+  color: var(--medium-grey-color);
+}

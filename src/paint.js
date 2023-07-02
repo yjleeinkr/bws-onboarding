@@ -1,4 +1,9 @@
-import { handleDelete, handleStatus, attachEvent } from "./eventHandler.js";
+import {
+  handleDelete,
+  handleStatus,
+  attachEvent,
+  changeEditMode,
+} from "./eventHandler.js";
 import { todos } from "./state.js";
 
 export function paintLocalTodos(todoList) {
@@ -43,8 +48,11 @@ export function appendTodos(todo) {
   todoItem.setAttribute("data-id", todo.id);
   text.textContent = todo.text;
   delBtn.textContent = "✕";
+
   delBtn.addEventListener("click", handleDelete);
   checkBox.addEventListener("click", handleStatus);
+  todoItem.addEventListener("dblclick", changeEditMode);
+
   todoItem.appendChild(checkBox);
   todoItem.appendChild(text);
   todoItem.appendChild(delBtn);

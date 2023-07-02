@@ -37,3 +37,10 @@ export function updateTodo(id) {
   setTodos(updatedTodos);
   return todos[clickedId].isDone;
 }
+
+export function updateTodoText(id, text) {
+  const updateTodos = todos.map((todo) =>
+    todo.id === id ? { ...todo, text } : todo
+  );
+  setTodos(updateTodos);
+}

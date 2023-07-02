@@ -1,5 +1,11 @@
-import { deleteTodo, updateTodo } from "./state.js";
-import { todos, setTodos, addTodo } from "./state.js";
+import {
+  todos,
+  setTodos,
+  addTodo,
+  deleteTodo,
+  updateTodo,
+  updateTodoText,
+} from "./state.js";
 import { appendTodos, paintLocalTodos, paintLocalStatus } from "./paint.js";
 import { sortTodos } from "./utils.js";
 
@@ -23,22 +29,58 @@ export function handleStatus(e) {
   paintLocalStatus();
 }
 
+export function changeEditMode(e) {
+  const $todoText = e.target;
+  const originalText = $todoText.textContent;
+  const $editInput = document.createElement("input");
+  $editInput.value = originalText;
+  $editInput.classList.add("input-for-edit");
+  $editInput.setAttribute("autofocus", "");
+
+  $editInput.addEventListener("keypress", (inputE) => {
+    if (inputE.key === "Enter") {
+      $todoText.innerHTML = inputE.target.value;
+      updateTodoText($todoText.parentElement.dataset.id, inputE.target.value);
+      document.body.removeEventListener("click", handleOutside);
+    }
+  });
+  $todoText.appendChild($editInput);
+
+  const handleOutside = (bodyE) => {
+    if (
+      bodyE.target !== $todoText.parentElement &&
+      bodyE.target !== $editInput &&
+      bodyE.target !== $editInput
+    ) {
+      $todoText?.removeChild($editInput);
+      document.body.removeEventListener("click", handleOutside);
+    }
+  };
+  document.body.addEventListener("click", handleOutside);
+}
+
 export function attachEvent() {
   const $delBtn = document.querySelectorAll(".del-btn");
   $delBtn.forEach((btn) => btn.addEventListener("click", handleDelete));
   const $checkBox = document.querySelectorAll(".checkbox");
   $checkBox.forEach((check) => check.addEventListener("click", handleStatus));
+  const $todoItem = document.querySelectorAll(".todo-item .todo-text");
+  $todoItem.forEach((todo) =>
+    todo.addEventListener("dblclick", changeEditMode)
+  );
 }
 
 export function inputEvent() {
   const $input = document.querySelector(".todo-input");
-
   $input.addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
       const todo = addTodo(e.currentTarget.value);
       appendTodos(todo);
       paintLocalStatus();
       e.target.value = "";
+      const $todoItem = document.querySelectorAll(".todo-item");
+      const $lastTodo = $todoItem[$todoItem.length - 1];
+      $lastTodo.scrollIntoView({ behavior: "smooth", block: "end" });
     }
   });
 }
