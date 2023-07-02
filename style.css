@@ -63,7 +63,7 @@ body {
 .todo-item {
   display: flex;
   align-items: center;
-  padding: 10px 0px;
+  padding: 17px 0px;
   border-bottom: solid 1px var(--light-grey-color);
   flex-wrap: nowrap;
 }
@@ -86,7 +86,6 @@ body {
 .checkbox {
   width: 25px;
   height: 25px;
-  margin: 0.5rem 0.5rem;
   border-radius: 50px;
   border: 1px solid lightgray;
   cursor: pointer;
@@ -97,7 +96,7 @@ body {
 .todo-item.checked .checkbox {
   border: 2px solid var(--light-grey-color);
   color: #2cca2c;
-  font-size: 25px;
+  font-size: 20px;
 }
 
 .todo-item.checked .todo-text {
