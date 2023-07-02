@@ -148,17 +148,22 @@ body {
   flex-wrap: nowrap;
   gap: 5px;
 }
-.status-btn {
+.filter-btn {
   padding: 2px 10px;
   border: solid 1px var(--light-grey-color);
   background: none;
   color: var(--medium-grey-color);
   cursor: pointer;
+  border-radius: 3px;
 }
 
-.status-btn:is(:focus, :hover) {
-  border: solid 1px var(--point-color);
+.filter-btn:is(:hover) {
+  border: solid 2px var(--point-color);
   transition: all 0.4s;
+}
+
+.filter-btn.clicked {
+  border: solid 2px var(--point-color);
 }
 
 .clear-all-btn {
