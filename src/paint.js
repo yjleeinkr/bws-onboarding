@@ -1,8 +1,9 @@
 import { handleDelete, handleStatus, attachEvent } from "./eventHandler.js";
+import { todos } from "./state.js";
 
-export function paintLocalTodos(todos) {
+export function paintLocalTodos(todoList) {
   const $todoList = document.querySelector(".todo-list");
-  const template = todos
+  const template = todoList
     .map(
       (todo) => `
       <li class="todo-item ${todo.isDone ? "checked" : ""}" data-id=${todo.id}>
@@ -17,7 +18,7 @@ export function paintLocalTodos(todos) {
   attachEvent();
 }
 
-export function paintLocalStatus(todos) {
+export function paintLocalStatus() {
   const $balance = document.querySelector(".left-num");
   const balanceQty = todos.reduce((acc, todo) => {
     !todo.isDone && (acc += 1);
