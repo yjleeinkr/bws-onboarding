@@ -14,6 +14,15 @@ export function paintLocalTodos(todos) {
     .join("");
 }
 
+export function paintLocalStatus(todos) {
+  const $balance = document.querySelector(".left-num");
+  const balanceQty = todos.reduce((acc, todo) => {
+    !todo.isDone && (acc += 1);
+    return acc;
+  }, 0);
+  $balance.textContent = balanceQty;
+}
+
 function createElement(element, styleClass) {
   const el = document.createElement(element);
   el.classList.add(styleClass);

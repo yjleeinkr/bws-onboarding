@@ -1,5 +1,5 @@
 import { getLocal, setLocal } from "./utils.js";
-import { paintLocalTodos, appendTodos } from "./paint.js";
+import { paintLocalTodos, appendTodos, paintLocalStatus } from "./paint.js";
 import { handleDelete, handleStatus } from "./eventHandler.js";
 
 const $input = document.querySelector(".todo-input");
@@ -10,6 +10,7 @@ let todos = getLocal("todos") ?? [];
 function setTodos(newTodos) {
   todos = newTodos;
   setLocal("todos", todos);
+  paintLocalStatus(todos);
 }
 
 function addTodo(text) {
@@ -46,6 +47,7 @@ export function updateTodo(id) {
 function initPaint() {
   const localTodos = paintLocalTodos(todos);
   $todoList.innerHTML = localTodos;
+  paintLocalStatus(todos);
 }
 
 function initEvent() {
