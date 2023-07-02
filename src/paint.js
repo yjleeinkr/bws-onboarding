@@ -1,23 +1,17 @@
-import { deleteTodo } from "./todos.js";
+import { handleDelete, handleStatus } from "./eventHandler.js";
 
 export function paintLocalTodos(todos) {
   return todos
     .map(
       (todo) => `
       <li class="todo-item ${todo.isDone ? "checked" : ""}" data-id=${todo.id}>
-        <span class="checkbox"></span>
+        <span class="checkbox">${todo.isDone ? "✔" : ""}</span>
         <p class="todo-text">${todo.text}</p>
         <button class="del-btn">✕</button>
       </li>
       `
     )
     .join("");
-}
-
-export function handleDelete(e) {
-  const todoItem = e.currentTarget.parentElement;
-  deleteTodo(todoItem.dataset.id);
-  todoItem.remove();
 }
 
 function createElement(element, styleClass) {
@@ -37,7 +31,7 @@ export function appendTodos(todo) {
   text.textContent = todo.text;
   delBtn.textContent = "✕";
   delBtn.addEventListener("click", handleDelete);
-
+  checkBox.addEventListener("click", handleStatus);
   todoItem.appendChild(checkBox);
   todoItem.appendChild(text);
   todoItem.appendChild(delBtn);
