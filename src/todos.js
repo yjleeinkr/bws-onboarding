@@ -46,6 +46,9 @@ export function updateTodo(id) {
 function initPaint() {
   const localTodos = paintLocalTodos(todos);
   $todoList.innerHTML = localTodos;
+}
+
+function initEvent() {
   const $delBtn = document.querySelectorAll(".del-btn");
   $delBtn.forEach((btn) => btn.addEventListener("click", handleDelete));
   const $checkBox = document.querySelectorAll(".checkbox");
@@ -54,6 +57,7 @@ function initPaint() {
 
 function init() {
   initPaint();
+  initEvent();
   $input.addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
       addTodo(e.currentTarget.value);
