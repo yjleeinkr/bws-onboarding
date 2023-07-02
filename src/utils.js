@@ -8,3 +8,12 @@ export const setLocal = (key, value) => {
 export const getLocal = (key) => {
   return localStorage.getItem(key) ? parse(localStorage.getItem(key)) : [];
 };
+
+export const sortTodos = (todos) => {
+  let leftTodos = [];
+  let doneTodos = [];
+  todos.forEach((todo) =>
+    todo.isDone ? doneTodos.push(todo) : leftTodos.push(todo)
+  );
+  return { leftTodos, doneTodos };
+};
