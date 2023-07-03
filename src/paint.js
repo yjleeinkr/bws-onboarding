@@ -4,7 +4,7 @@ import {
   attachEvent,
   changeEditMode,
 } from "./eventHandler.js";
-import { todos } from "./state.js";
+import { getTodos } from "./state.js";
 
 export function paintLocalTodos(todoList) {
   const $todoList = document.querySelector(".todo-list");
@@ -25,7 +25,7 @@ export function paintLocalTodos(todoList) {
 
 export function paintLocalStatus() {
   const $balance = document.querySelector(".left-num");
-  const balanceQty = todos.reduce((acc, todo) => {
+  const balanceQty = getTodos().reduce((acc, todo) => {
     !todo.isDone && (acc += 1);
     return acc;
   }, 0);

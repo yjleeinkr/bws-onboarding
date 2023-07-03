@@ -1,6 +1,10 @@
 import { getLocal, setLocal } from "./utils.js";
 
-export let todos = getLocal("todos") ?? [];
+let todos = getLocal("todos") ?? [];
+
+export function getTodos() {
+  return todos;
+}
 
 export function setTodos(newTodos) {
   todos = newTodos;

@@ -1,5 +1,5 @@
 import {
-  todos,
+  getTodos,
   setTodos,
   addTodo,
   deleteTodo,
@@ -88,13 +88,13 @@ export function inputEvent() {
 export function clearAllEvent() {
   const $clearAllBtn = document.querySelector(".clear-all-btn");
   $clearAllBtn.addEventListener("click", () => {
-    const { leftTodos, doneTodos } = sortTodos(todos);
+    const { leftTodos, doneTodos } = sortTodos(getTodos());
     if (doneTodos.length === 0) {
       alert("삭제할 todo가 없습니다");
       return;
     }
     setTodos(leftTodos);
-    paintLocalTodos(todos);
+    paintLocalTodos(getTodos());
     paintLocalStatus();
   });
 }
@@ -106,9 +106,9 @@ export function btnGroupEvent() {
     const clicked = $btnGroup.querySelector(".clicked");
     clicked?.classList.remove("clicked");
     e.target.classList.add("clicked");
-    const { leftTodos, doneTodos } = sortTodos(todos);
+    const { leftTodos, doneTodos } = sortTodos(getTodos());
     const filtered = {
-      all: todos,
+      all: getTodos(),
       active: leftTodos,
       done: doneTodos,
     };

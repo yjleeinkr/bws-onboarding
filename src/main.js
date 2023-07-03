@@ -1,9 +1,9 @@
 import { paintLocalTodos, paintLocalStatus } from "./paint.js";
 import { inputEvent, clearAllEvent, btnGroupEvent } from "./eventHandler.js";
-import { todos } from "./state.js";
+import { getTodos } from "./state.js";
 
 function initPaint() {
-  paintLocalTodos(todos);
+  paintLocalTodos(getTodos());
   paintLocalStatus();
 }
 
