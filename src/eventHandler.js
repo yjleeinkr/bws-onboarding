@@ -40,6 +40,10 @@ export function changeEditMode(e) {
 
   $editInput.addEventListener("keypress", (inputE) => {
     if (inputE.key === "Enter") {
+      if (!inputE.target.value) {
+        alert("할 일을 적어주세요.");
+        return;
+      }
       $todoText.innerHTML = inputE.target.value;
       updateTodoText($todoText.parentElement.dataset.id, inputE.target.value);
       document.body.removeEventListener("click", handleOutside);
@@ -123,6 +127,10 @@ export function inputEvent() {
   const $input = $(".todo-input");
   $input.addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
+      if (!e.currentTarget.value) {
+        alert("할 일을 적어주세요.");
+        return;
+      }
       const todo = addTodo(e.currentTarget.value);
       appendTodos(todo);
       paintLocalStatus();
