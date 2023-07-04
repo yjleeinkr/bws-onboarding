@@ -5,7 +5,7 @@ import {
   deleteTodo,
   updateTodo,
   updateTodoText,
-  replaceTodo,
+  changeOrder,
 } from "./state.js";
 import { appendTodos, paintLocalTodos, paintLocalStatus } from "./paint.js";
 import { sortTodos, $all, $ } from "./utils.js";
@@ -97,7 +97,7 @@ export function dragEvent() {
     });
     draggable.addEventListener("dragend", () => {
       draggable.classList.remove("dragging");
-      replaceTodo(draddingTodoId, afterTodoId);
+      changeOrder(draddingTodoId, afterTodoId);
     });
   });
 

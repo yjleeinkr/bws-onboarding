@@ -49,13 +49,16 @@ export function updateTodoText(id, text) {
   setTodos(updateTodos);
 }
 
-export function replaceTodo(originalId, changedId) {
+export function changeOrder(originalId, changedId) {
   const idx = todos.findIndex((todo) => todo.id === originalId);
   const changeIdx =
     changedId === -1
-      ? todos.length - 1
+      ? todos.length
       : todos.findIndex((todo) => todo.id === changedId);
-  const tmpTodos = todos;
-}
 
-// [1,2,3,4] [1,3,4,] [1 3] 2 4
+  let tmpTodos = todos;
+  const dragItem = todos[idx];
+  tmpTodos.splice(idx, 1);
+  tmpTodos.splice(changeIdx - 1, 0, dragItem);
+  setTodos(tmpTodos);
+}
