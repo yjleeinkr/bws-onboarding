@@ -133,6 +133,9 @@ body {
   color: var(--light-grey-color);
 }
 
+.todo-item.draggable.dragging {
+  box-shadow: pink 0px 0px 5px;
+}
 .del-btn {
   font-size: 25px;
   color: var(--light-grey-color);

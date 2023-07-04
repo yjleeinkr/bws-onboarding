@@ -48,3 +48,14 @@ export function updateTodoText(id, text) {
   );
   setTodos(updateTodos);
 }
+
+export function replaceTodo(originalId, changedId) {
+  const idx = todos.findIndex((todo) => todo.id === originalId);
+  const changeIdx =
+    changedId === -1
+      ? todos.length - 1
+      : todos.findIndex((todo) => todo.id === changedId);
+  const tmpTodos = todos;
+}
+
+// [1,2,3,4] [1,3,4,] [1 3] 2 4

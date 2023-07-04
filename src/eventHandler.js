@@ -5,9 +5,10 @@ import {
   deleteTodo,
   updateTodo,
   updateTodoText,
+  replaceTodo,
 } from "./state.js";
 import { appendTodos, paintLocalTodos, paintLocalStatus } from "./paint.js";
-import { sortTodos } from "./utils.js";
+import { sortTodos, $all, $ } from "./utils.js";
 
 export function handleDelete(e) {
   const todoItem = e.currentTarget.parentElement;
@@ -59,26 +60,74 @@ export function changeEditMode(e) {
   document.body.addEventListener("click", handleOutside);
 }
 
-export function attachEvent() {
-  const $delBtn = document.querySelectorAll(".del-btn");
-  $delBtn.forEach((btn) => btn.addEventListener("click", handleDelete));
-  const $checkBox = document.querySelectorAll(".checkbox");
-  $checkBox.forEach((check) => check.addEventListener("click", handleStatus));
-  const $todoItem = document.querySelectorAll(".todo-item .todo-text");
-  $todoItem.forEach((todo) =>
-    todo.addEventListener("dblclick", changeEditMode)
+function getDragAfterElement(dragArea, y) {
+  const noDrag = [...dragArea.querySelectorAll(".draggable:not(.dragging)")];
+  // 드래그하고 있는 요소 제외한 나머지 .draggable
+
+  const afterElementInfo = noDrag.reduce(
+    (closest, curChild) => {
+      const nearChild = curChild.getBoundingClientRect();
+      const offset = y - nearChild.top - nearChild.height / 2;
+      if (offset < 0 && offset > closest.offset) {
+        // 0 이하 && 음의 무한대 사이 조건
+        return { offset, element: curChild };
+      } else {
+        return closest;
+      }
+    },
+    { offset: Number.NEGATIVE_INFINITY }
   );
+
+  return afterElementInfo.element;
+}
+
+export function dragEvent() {
+  const $draggables = $all(".draggable");
+  const $dragArea = $(".todo-list");
+  let draddingTodoId; // 드래그하고있던 투두 아이디
+  let afterTodoId; // 위치를 양보해준 투두 아이디
+
+  $draggables.forEach((draggable) => {
+    draggable.addEventListener("dragstart", () => {
+      draggable.classList.add("dragging");
+    });
+    draggable.addEventListener("dragend", () => {
+      draggable.classList.remove("dragging");
+      replaceTodo(draddingTodoId, afterTodoId);
+    });
+  });
+
+  $dragArea.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    const afterElement = getDragAfterElement($dragArea, e.clientY);
+
+    const dragging = $dragArea.querySelector(".dragging");
+    $dragArea.insertBefore(dragging, afterElement);
+    // 부모노드.insertBefore(새로운 자식노드, 기준자식노드) 특정 기준 자식노드 앞에 새로운 노드 삽입 가능
+    draddingTodoId = dragging.dataset.id;
+    afterTodoId = afterElement?.dataset.id ?? -1;
+  });
+}
+
+export function attachEvent() {
+  const $delBtn = $all(".del-btn");
+  const $checkBox = $all(".checkbox");
+  const $text = $all(".todo-item .todo-text");
+  $delBtn.forEach((btn) => btn.addEventListener("click", handleDelete));
+  $checkBox.forEach((check) => check.addEventListener("click", handleStatus));
+  $text.forEach((text) => text.addEventListener("dblclick", changeEditMode));
+  dragEvent();
 }
 
 export function inputEvent() {
-  const $input = document.querySelector(".todo-input");
+  const $input = $(".todo-input");
   $input.addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
       const todo = addTodo(e.currentTarget.value);
       appendTodos(todo);
       paintLocalStatus();
       e.target.value = "";
-      const $todoItem = document.querySelectorAll(".todo-item");
+      const $todoItem = $all(".todo-item");
       const $lastTodo = $todoItem[$todoItem.length - 1];
       $lastTodo.scrollIntoView({ behavior: "smooth", block: "end" });
     }
@@ -86,7 +135,7 @@ export function inputEvent() {
 }
 
 export function clearAllEvent() {
-  const $clearAllBtn = document.querySelector(".clear-all-btn");
+  const $clearAllBtn = $(".clear-all-btn");
   $clearAllBtn.addEventListener("click", () => {
     const { leftTodos, doneTodos } = sortTodos(getTodos());
     if (doneTodos.length === 0) {
@@ -100,18 +149,21 @@ export function clearAllEvent() {
 }
 
 export function btnGroupEvent() {
-  const $btnGroup = document.querySelector(".btn-group");
-  $btnGroup.addEventListener("click", (e) => {
-    const status = e.target.className.split(" ")[1];
-    const clicked = $btnGroup.querySelector(".clicked");
-    clicked?.classList.remove("clicked");
-    e.target.classList.add("clicked");
-    const { leftTodos, doneTodos } = sortTodos(getTodos());
-    const filtered = {
-      all: getTodos(),
-      active: leftTodos,
-      done: doneTodos,
-    };
-    paintLocalTodos(filtered[status]);
-  });
+  const $btnGroup = $(".btn-group");
+  const $btns = $all(".filter-btn");
+  $btns.forEach((btn) =>
+    btn.addEventListener("click", (e) => {
+      const status = e.target.className.split(" ")[1];
+      const clicked = $btnGroup.querySelector(".clicked");
+      clicked?.classList.remove("clicked");
+      e.target.classList.add("clicked");
+      const { leftTodos, doneTodos } = sortTodos(getTodos());
+      const filtered = {
+        all: getTodos(),
+        active: leftTodos,
+        done: doneTodos,
+      };
+      paintLocalTodos(filtered[status]);
+    })
+  );
 }
