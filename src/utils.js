@@ -17,3 +17,6 @@ export const sortTodos = (todos) => {
   );
   return { leftTodos, doneTodos };
 };
+
+export const $ = (element) => document.querySelector(element);
+export const $all = (element) => document.querySelectorAll(element);
